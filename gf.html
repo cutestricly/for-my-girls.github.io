@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Happy Girlfriend Day 💌</title>
+<style>
+    body {
+        margin: 0;
+        font-family: 'Arial', sans-serif;
+        background: linear-gradient(to bottom, #ffe6e6, #fff4e6);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        overflow: hidden;
+        flex-direction: column;
+    }
+
+    /* Tahap awal - Love besar */
+    #start-love {
+        font-size: 80px;
+        cursor: pointer;
+        transition: transform 0.3s ease;
+    }
+    #click-text {
+        font-size: 1.2em;
+        color: #d94f70;
+        margin-top: 10px;
+        font-weight: bold;
+    }
+    .pop {
+        animation: popAnim 0.5s ease forwards;
+    }
+    @keyframes popAnim {
+        0% { transform: scale(1); opacity: 1; }
+        100% { transform: scale(2); opacity: 0; }
+    }
+
+    /* Amplop */
+    .envelope {
+        width: 250px;
+        height: 150px;
+        background: pink;
+        position: relative;
+        cursor: pointer;
+        transition: opacity 1s ease;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        z-index: 2;
+        display: none;
+    }
+    .envelope::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        border-left: 125px solid transparent;
+        border-right: 125px solid transparent;
+        border-bottom: 75px solid #ffb6c1;
+    }
+    .envelope::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        border-left: 125px solid transparent;
+        border-right: 125px solid transparent;
+        border-top: 75px solid #ffcccc;
+    }
+    .fade-out {
+        opacity: 0;
+        pointer-events: none;
+    }
+
+    /* Surat */
+    .letter {
+        position: absolute;
+        width: 320px;
+        max-width: 90%;
+        background: #fff4e6;
+        border-radius: 10px;
+        text-align: center;
+        padding: 20px;
+        box-sizing: border-box;
+        font-size: 1em;
+        font-weight: bold;
+        color: #d94f70;
+        transform: scale(0);
+        transition: transform 1s ease, opacity 0.5s ease;
+        z-index: 3;
+        cursor: pointer;
+    }
+    .zoom-in {
+        transform: scale(1);
+    }
+    #click-again {
+        font-size: 0.9em;
+        color: #ff4d6d;
+        margin-top: 10px;
+        display: none;
+    }
+
+    /* Karakter lucu */
+    .character {
+        font-size: 50px;
+        display: block;
+        margin-top: 15px;
+        opacity: 0;
+        transform: translateY(50px);
+        transition: all 1s ease;
+    }
+    .character.show {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    /* Love terbang */
+    .heart {
+        position: absolute;
+        font-size: 20px;
+        color: red;
+        animation: float 4s linear;
+        z-index: 0;
+    }
+    @keyframes float {
+        0% { transform: translateY(0) scale(1); opacity: 1; }
+        100% { transform: translateY(-300px) scale(1.5); opacity: 0; }
+    }
+
+    /* Kembang api */
+    .firework {
+        position: absolute;
+        border-radius: 50%;
+        pointer-events: none;
+        animation: explode 1s ease-out forwards;
+    }
+    @keyframes explode {
+        from { transform: scale(0); opacity: 1; }
+        to { transform: scale(1.5); opacity: 0; }
+    }
+
+    /* Polaroid */
+    .polaroid-stack {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 15px;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        display: none;
+    }
+    .polaroid {
+        width: 200px;
+        height: 200px;
+        padding: 8px;
+        background: pink;
+        box-shadow: 0 6px 12px rgba(0,0,0,0.2);
+        border-radius: 10px;
+        opacity: 0;
+        transform: translateY(-50px) scale(0.8);
+        transition: all 0.5s ease;
+    }
+    .polaroid img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border: 4px solid white;
+        border-radius: 5px;
+    }
+    .polaroid.show {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+</style>
+</head>
+<body>
+
+<audio id="bg-music" src="https://www.bensound.com/bensound-music/bensound-romantic.mp3"></audio>
+
+<!-- Tahap awal -->
+<div id="start-love" onclick="popLove()">💖</div>
+<div id="click-text">Click the love 💖</div>
+
+<!-- Amplop -->
+<div class="envelope" id="envelope" onclick="openLetter(event)"></div>
+
+<!-- Surat -->
+<div class="letter" id="letter" onclick="showPolaroids()">
+    💖 Happy Girlfriend Day 💖<br><br>
+    to the most beautiful souls — <b>Ibbel, Emme, Gendhis, Kiko, Karel, Onil, Katelyn, and Juju</b>. 💕<br><br>
+    Thank you for coloring my days with your laughter, and filling the quiet moments with your love.
+    <span class="character" id="character">🐰</span>
+    <div id="click-again">Click again 💕</div>
+</div>
+
+<!-- Polaroid -->
+<div id="polaroid-stack" class="polaroid-stack">
+    <div class="polaroid"><img src="foto1.jpg"></div>
+    <div class="polaroid"><img src="foto2.jpg"></div>
+    <div class="polaroid"><img src="foto3.jpg"></div>
+    <div class="polaroid"><img src="foto4.jpg"></div>
+    <div class="polaroid"><img src="foto5.jpg"></div>
+</div>
+
+<script>
+let letterOpened = false;
+
+function popLove() {
+    const love = document.getElementById('start-love');
+    const text = document.getElementById('click-text');
+    love.classList.add('pop');
+    text.style.opacity = 0;
+
+    setTimeout(() => {
+        love.style.display = 'none';
+        text.style.display = 'none';
+        document.getElementById('envelope').style.display = 'block';
+    }, 500);
+}
+
+function openLetter(event) {
+    if (letterOpened) return;
+    letterOpened = true;
+    const envelope = document.getElementById('envelope');
+    const letter = document.getElementById('letter');
+    const character = document.getElementById('character');
+    const music = document.getElementById('bg-music');
+
+    music.play().catch(() => {
+        alert("Klik sekali lagi untuk memutar musik ❤️");
+    });
+
+    envelope.classList.add('fade-out');
+
+    setTimeout(() => {
+        letter.classList.add('zoom-in');
+        createHearts();
+        launchFireworks(window.innerWidth/2, window.innerHeight/2);
+
+        setTimeout(() => {
+            character.classList.add('show');
+            document.getElementById('click-again').style.display = 'block';
+        }, 500);
+    }, 800);
+}
+
+function createHearts() {
+    setInterval(() => {
+        let heart = document.createElement('div');
+        heart.classList.add('heart');
+        heart.innerHTML = '❤️';
+        heart.style.left = Math.random() * 100 + 'vw';
+        heart.style.top = '100vh';
+        heart.style.animationDuration = (Math.random() * 2 + 3) + 's';
+        document.body.appendChild(heart);
+        setTimeout(() => heart.remove(), 5000);
+    }, 300);
+}
+
+function launchFireworks(x, y) {
+    for (let i = 0; i < 20; i++) {
+        let firework = document.createElement('div');
+        firework.classList.add('firework');
+        firework.style.width = firework.style.height = '10px';
+        firework.style.background = getRandomColor();
+        firework.style.left = (x - 5) + 'px';
+        firework.style.top = (y - 5) + 'px';
+        document.body.appendChild(firework);
+        setTimeout(() => firework.remove(), 1000);
+    }
+}
+
+function getRandomColor() {
+    const colors = ['#ff4d6d', '#ffb3c1', '#ffd6e0', '#fff4e6', '#ffc93c', '#ff6f61'];
+    return colors[Math.floor(Math.random() * colors.length)];
+}
+
+function showPolaroids() {
+    const letter = document.getElementById('letter');
+    const stack = document.getElementById('polaroid-stack');
+
+    letter.style.opacity = 0;
+    setTimeout(() => {
+        letter.style.display = 'none';
+        stack.style.display = 'flex';
+        const polaroids = stack.querySelectorAll('.polaroid');
+        polaroids.forEach((p, i) => {
+            setTimeout(() => p.classList.add('show'), i * 300);
+        });
+    }, 500);
+}
+</script>
+
+</body>
+</html>
